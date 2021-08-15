@@ -1,10 +1,10 @@
 import requests
 
-from typing import Optional, Tuple, Union
+from typing import Optional, Union
 from urllib.parse import urlencode
 from json.decoder import JSONDecodeError
 import datetime
-import response_classes
+from . import response_classes
 
 
 class QiwiP2P:
@@ -143,6 +143,7 @@ class QiwiP2P:
         params = dict(filter(lambda item: item[1], params.items()))  # убирает пустые значения
 
         if return_pay_link:
+            self._check_public_key()
             assert amount_currency == 'RUB', ('Для формы поддерживается только оплата рублями. Воспользуйтесь'
                                               ' оплатой через API')
             url = 'https://oplata.qiwi.com/create?'
@@ -152,8 +153,6 @@ class QiwiP2P:
             return url + urlencode(params)
 
         else:
-            self._check_public_key()
-            print(params)
             return self._get_bill_from_response(
                 self._secret_request(method='PUT', url=f'https://api.qiwi.com/partner/bill/v1/bills/{bill_id}',
                                      headers={'Content-Type': 'application/json'}, json=params, **kwargs)
