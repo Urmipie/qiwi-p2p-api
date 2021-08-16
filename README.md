@@ -21,6 +21,7 @@ print(bill.pay_url)
 
 # и если требуется ссылка на форму, а не создание счёта через API
 
+qiwi_p2p = QiwiP2P(public_key=PUBLIC_KEY)
 bill = qiwi_p2p.create_bill(bill_id='test2', amount=1.99, custom_fields={'themeCode': THEME_CODE},
                             expiration_datetime=timedelta(hours=3), success_url='http://random.cat')
 print(bill)
