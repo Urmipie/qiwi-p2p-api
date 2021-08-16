@@ -50,7 +50,7 @@ class QiwiP2P:
         return response
 
     @staticmethod
-    def _get_bill_from_response(response: requests.Response) -> response_classes.Base:
+    def _get_bill_from_response(response: requests.Response) -> response_classes.BaseResponse:
         """Переводит response в класс из response_classes"""
         if response.status_code == 200:
             return response_classes.Bill(json=response.json())
@@ -72,7 +72,7 @@ class QiwiP2P:
                     custom_fields: dict = None,
                     return_pay_link: bool = False,
                     success_url: str = None,
-                    **kwargs) -> Union[str, response_classes.Base]:
+                    **kwargs) -> Union[str, response_classes.BaseResponse]:
         """
         Выставление оплаты через форму или по API
         Поля совпадают с таковыми в документации, за исключением "питонофикации": например, billId изменён на bill_id,
@@ -158,7 +158,7 @@ class QiwiP2P:
                                      headers={'Content-Type': 'application/json'}, json=params, **kwargs)
             )
 
-    def get_bill_status(self, bill_id, **kwargs) -> response_classes.Base:
+    def get_bill(self, bill_id, **kwargs) -> response_classes.BaseResponse:
         """Метод позволяет проверить статус перевода по счету"""
         response = self._secret_request('GET', 'https://api.qiwi.com/partner/bill/v1/bills/' + bill_id, **kwargs)
         return self._get_bill_from_response(response)

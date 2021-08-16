@@ -6,9 +6,12 @@ def qiwi_format_to_datetime(string: str) -> datetime.datetime:
     """Переводит время, которое присылает Qiwi в datetime UTC"""
     return datetime.datetime.strptime(string.split('.')[0].split('+')[0], '%Y-%m-%dT%H:%M:%S')
 
-class Base:
+
+class BaseResponse:
     """Базовый класс-дескриптор"""
-    def __init__(self, json: dict = {}):
+    def __init__(self, json=None):
+        if json is None:
+            json = {}
         self.__dict__ = json
         self.json = self.json
 
@@ -18,17 +21,14 @@ class Base:
     def __str__(self):
         return str(self.__class__) + ': ' + str(self.__dict__)
 
-    def __bool__(self):
-        return bool(self.__dict__)
-
     def __getitem__(self, item):
         return self.__dict__[item]
 
     def __bool__(self):
-        pass
+        return False
 
 
-class Bill(Base):
+class Bill(BaseResponse):
     """
     Класс, возвращаемый вместо JSON с данными счёта. Атрибут .json Содержит исходный dict
     Названия атрибутов совпадают с названиями из документации Qiwi, но "питонизированы"
@@ -54,7 +54,7 @@ class Bill(Base):
         return True
 
 
-class ErrorResponse(Base):
+class ErrorResponse(BaseResponse):
     def __init__(self, json: dict, status_code=404):
         self.service_name = json.get('invoicing-api')
         self.error_code = json.get('errorCode')
