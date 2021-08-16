@@ -107,3 +107,6 @@ bool(ErrorResponse) == False
 * user_message
 * datetime
 * trace_id
+
+# Аналог(и)
+* https://github.com/WhiteApfel/pyQiwiP2P
