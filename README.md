@@ -3,10 +3,18 @@
 Параметры функций, кроме lifetime в оплате через форму, идентичны параметрам из [официальной документации QIWi p2p](https://developer.qiwi.com/ru/p2p-payments), но изменены для соответствия PEP.
 Так billId переименовано в bill_id, а все параметры с *DateTime переименованы в *_datetime
 
+# Альтернативы
+* https://github.com/WhiteApfel/pyQiwiP2P
+* https://github.com/GLEF1X/glQiwiApi
+
 # Установка
 1. Скачать этот репозиторий
-2. Распаковать в папке вашего проекта или в папке с модулями
-3. `pip install requests`
+2. Распаковать в папке, где находится исполняемый скрипт или в папке с модулями (что-то вроде `$PYTHONPATH$\Lib\site-packages`)
+4. `pip install requests`
+
+# Блокировка кошелька из-за referer
+QIWI требует, чтобы при переходе по ссылке указывался referer. Если вы передаёте ссылки через мессенджеры или соцсети, вероятнее всего, этот параметр будет указан (по крайней мере, оф. приложения VK и Telegram однозначно оставляют его). Подробнее можете почитать [тут](https://qiwi.com/support/products/p2p/referalnie_ssylki).
+
 
 # Примеры
 Создание счёта и печать ссылки на него
@@ -109,5 +117,5 @@ bool(ErrorResponse) == False
 * datetime
 * trace_id
 
-# Аналог(и)
-* https://github.com/WhiteApfel/pyQiwiP2P
+# Обратная связь
+Если вы почему-то столкнулись с какими-то проблемами, но почему-то не хотите открыть issues или же просто желаете что-то написать, можете достать меня в [telegram](https://t.me/urmipie) или [VK](https://vk.com/urmipie)
