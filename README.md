@@ -31,7 +31,8 @@ print(bill.pay_url)
 
 qiwi_p2p = QiwiP2P(public_key=PUBLIC_KEY)
 bill = qiwi_p2p.create_bill(bill_id='test2', amount=1.99, custom_fields={'themeCode': THEME_CODE},
-                            expiration_datetime=timedelta(hours=3), success_url='http://random.cat')
+                            expiration_datetime=timedelta(hours=3), success_url='http://random.cat',
+                            return_pay_link=True)
 print(bill)
 ```
 
