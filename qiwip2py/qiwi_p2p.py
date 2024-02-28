@@ -63,14 +63,13 @@ class QiwiP2P:
     def create_bill(self,
                     bill_id: Optional[str] = None,
                     amount: Optional[Union[float, int]] = None,
-                    amount_currency: str = 'RUB',
+                    amount_currency: str = 'KZT',
                     phone: str = '',
                     email: str = '',
                     account: str = '',
                     comment: str = '',
                     expiration_datetime: Optional[datetime.timedelta] = None,
                     custom_fields: dict = None,
-                    return_pay_link: bool = False,
                     success_url: str = None,
                     **kwargs) -> Union[str, response_classes.BaseResponse]:
         """
@@ -102,16 +101,15 @@ class QiwiP2P:
                     ему присваивается финальный статус EXPIRED и последующий перевод станет невозможен.
                     По истечении 45 суток от даты выставления счет автоматически будет переведен в финальный статус
 
-        :param return_pay_link: Вместо создания формы и возвращения bill вернёт ссылку на оплату и вернёт url если True
-                                    (Вместо секретного ключа требуется публичный)
         :param custom_fields: Словарь с пользовательскими данными
 
         :param success_url: URL для переадресации на ваш сайт в случае успешного перевода (Только в форме!)
 
         :param kwargs: Именнованные параметры для передачи в requests.request
 
-        :return: Bill, если return_pay_link == False, иначе ссылку на форму оплаты
+        :return: Bill (если return_pay_link == True, возвращает ссылку на оплату, которая работала только в Рублях)
         """
+        return_pay_link = False
         if amount:
             amount = f'{float(amount):.2f}'
 
@@ -144,8 +142,8 @@ class QiwiP2P:
 
         if return_pay_link:
             self._check_public_key()
-            assert amount_currency == 'RUB', ('Для формы поддерживается только оплата рублями. Воспользуйтесь'
-                                              ' оплатой через API')
+            assert amount_currency == 'RUB', ('Воспользуйтесь'
+                                              ' оплатой через API, этот способ был доступен только для рублей')
             url = 'https://oplata.qiwi.com/create?'
             if custom_fields:
                 for key, item in custom_fields.items():

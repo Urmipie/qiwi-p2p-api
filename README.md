@@ -1,3 +1,6 @@
+# RIP QIWI 2007-2024
+Так как КИВИ больше не работают в России, я больше не буду обновлять эту библиотеку.
+Я удалил метод, который был доступен только в рублях. Если оплата через ссылку теперь доступна и в Тенге, вы можете использовать версию в соседней ветке.
 # qiwi-p2p-api
 Простое Python SDK для p2p Qiwi API
 Параметры функций, кроме lifetime в оплате через форму, идентичны параметрам из [официальной документации QIWi p2p](https://developer.qiwi.com/ru/p2p-payments), но изменены для соответствия PEP.
@@ -16,7 +19,7 @@
 QIWI требует, чтобы при переходе по ссылке указывался referer. Если вы передаёте ссылки через мессенджеры или соцсети, вероятнее всего, этот параметр будет указан (по крайней мере, оф. приложения VK и Telegram однозначно оставляют его). Подробнее можете почитать [тут](https://qiwi.com/support/products/p2p/referalnie_ssylki).
 
 
-# Примеры
+# Пример
 Создание счёта и печать ссылки на него
 ```python
 from qiwip2py import QiwiP2P
@@ -26,14 +29,6 @@ qiwi_p2p = QiwiP2P(secret_key=SECRET_KEY)
 bill = qiwi_p2p.create_bill(bill_id='test', amount=1.99, custom_fields={'themeCode': THEME_CODE},
                             expiration_datetime=timedelta(hours=3))
 print(bill.pay_url)
-
-# и если требуется ссылка на форму, а не создание счёта через API
-
-qiwi_p2p = QiwiP2P(public_key=PUBLIC_KEY)
-bill = qiwi_p2p.create_bill(bill_id='test2', amount=1.99, custom_fields={'themeCode': THEME_CODE},
-                            expiration_datetime=timedelta(hours=3), success_url='http://random.cat',
-                            return_pay_link=True)
-print(bill)
 ```
 
 Проверка существования счёта
@@ -51,8 +46,6 @@ else:
 Во всех случаях, кроме оплаты через форму, используется секретный ключ.
 
 Во все методы можно передать иные именованные аргументы, вроде proxy, и те передадутся в requests.request
-### create_bill
-Если return_pay_link == False или не указан, то создаст счёт и вернёт то же самое, что и QiwiP2P.get_bill() с созданным bill_id. Иначе вернёт url формы оплаты. В этом случае требуется публичный, а не секретный ключ
 
 Таблица параметров и соответствия с Qiwi p2p
 
